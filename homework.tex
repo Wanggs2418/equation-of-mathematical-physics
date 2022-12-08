@@ -1,0 +1,536 @@
+\documentclass{article}
+% \documentclass[twocolumn]{article}
+\usepackage{ctex}
+% \usepackage{cite}
+\usepackage{geometry}  %页面布局
+\usepackage{listings} %代码环境
+\usepackage{color}
+\usepackage[dvipsnames,svgnames,x11names]{xcolor} %整合12种色彩模式
+\usepackage{setspace} %行距
+\usepackage{marginnote} %边注
+\usepackage{verbatim} %代码环境
+\usepackage{paralist} %列表的行间距
+\usepackage{amsmath} %公式，ams版本的equation环境可以嵌入次环境
+\usepackage{amsthm} %定理，提供proof环境来输出证明
+\usepackage{amsfonts} %\mathfrak和\mathbb需要
+\usepackage{mathrsfs} %\mathscr{text}需要
+\usepackage{graphicx} %插入图片的宏包
+\usepackage{subfig} %图片共享有一个子标题
+\usepackage{pstricks} %可以直接在文档中插入绘图命令
+\usepackage{pspicture}
+\usepackage{booktabs} %三线表横线的的粗细
+\usepackage{tikz} %前端TikZ调用，底层PGF系统驱动
+\usepackage{pst-pdf} %生成包含PSTricks图形的EPS,根据需要转为
+\usepackage{multirow} %横跨几行的宏包
+\usepackage{warpcol} %调整小数点和数位对齐工作
+\usepackage{longtable} %表格太长，用longtable取代tabular
+\usepackage{tabularx} %控制整个表格的宽度
+\usepackage{rotating} %设置宽表格时使用，用sidewaystable环境替代table
+% \usepackage[table]{xcolor}
+\usepackage{colortbl} %表格颜色
+\usepackage{xltxtra} %XeLaTex标志符号显示使用
+\usepackage{texnames} %BibTeX标志使用
+\usepackage{mflogo} %METAFONT宏包使用
+\usepackage{natbib} %文献
+\usepackage{hyperref} %超链接功能
+\usepackage{enumitem}
+\usepackage{fixdif} %2023年收录的包，重新定义数学模式下微分算符d，即\d
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+
+% 更改有序列表样式
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\setlist{nosep}
+
+\linespread{1.5}
+\geometry{a4paper,left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\graphicspath{{E:/Latex/takehome/image}} %事先指定图片的路径
+
+\abovedisplayskip=12pt plus 3pt minus 9pt
+\abovedisplayshortskip=0pt plus 3pt
+\belowdisplayskip=12pt plus 3pt minus 9pt
+\belowdisplayshortskip=7pt plus 3pt minus 4pt
+\captionsetup{font={small,stretch=1.25},justification=raggedright}
+
+\begin{document}
+\section{基本概念}
+\subsection{概念}
+偏微分方程(Partial Differential Equation)PDE
+
+常微分方程(Ordinary Differential Equation)ODE
+
+数理方程中主要研究二阶线性偏微分方程。
+\subsection{偏微分方程的阶}
+未知函数偏导数\textbf{最高阶}定义为方程的阶。
+
+\subsection{偏微分方程的分类}
+(1)齐次方程和非齐次方程
+是否含有仅依赖于自变量的函数
+
+(2)线性方程——方程中未知函数及其偏导数都是线性的，且未知函数系数依赖于自变量。
+
+(3)拟线性方程——\textbf{最高阶偏导数}是线性的，但方程非线性。
+
+(4)非线性方程——最高阶偏导是非线性的。
+
+\subsection{习题}
+(a)$(xy +5)u_{xyyz} + x^2yu_{xyz} + y^4u_{yyz} + x^2u + \ln xz = 0$
+
+含$\ln xz$非齐次，最高阶4阶为$u_{xyyz}$，整体线性。
+
+(b)$u_{xx}^2(u_{yy}+1)+2u_xu_y^3+\sin x = 0$
+
+含$\sin x$非齐次，最高阶数2阶为$u_{xx},u_{yy},u_{xy}$，含有$u_{xx}^2(u_{yy}+1),u_xu_y^3$项，非线性。
+
+(c)$u_{xyz}u_{xyyz}+6x^2y^2u_{xyz}+u_xy=0$
+
+方程非线性，但是最高项4阶为$u_{xyz}u_{xyyz}$且是线性的，所以总体为拟线性。
+
+注意：如果是$u_{xxyz}u_{xyyz}$最高阶则是非线性的。
+
+\section{数学模型的建立及定解问题}
+\subsection{三类典型方程}
+\begin{enumerate}
+    \item 波动方程：$u_{tt}=a^2(u_{xx})+u_{yy}$
+    \item 热传导方程：$u_t=k(u_{xx}+u_{yy})$
+    \item 拉普拉斯方程：$u_{xx}+u_{yy}=0$
+\end{enumerate}
+
+\section{两个自变量的二阶线性偏微分方程的分类与化简}
+\subsection{按数学角度分类}
+
+\begin{enumerate}
+    \item 双曲型方程：$u_{tt}=a^2 u_{xx}$
+    \item 抛物型方程：$u_t=ku_{xx}$
+    \item 椭圆型方程：$u_{xx}+u_{yy}=0$
+\end{enumerate}
+\subsection{两个自变量得二阶线性PDE得化简}
+对于二阶线性微分方程的一般形式为：
+% \vspace*{-1em}
+$$
+    a(x,y)u_{xx}+b(x,y)u_{xy}+c(x,y)u_{yy}+d(x,y)u_x+e(x,y)u_y+f(x,y)u=g(x,y)
+$$
+
+% \vspace*{-1em}
+考虑变量变换
+$$
+    \left\{
+    \begin{aligned}
+         & \xi = \xi(x,y)   \\
+         & \eta = \eta(x,y)
+    \end{aligned}
+    \right.
+$$
+
+Jacobi行列式确保满足，$J \ne 0$，即为可逆变换：
+% \vspace*{-1em}
+$$
+    A(\xi,\eta)u_{\xi\xi}+B(\xi,\eta)u_{\xi\eta}+C(\xi,\eta)u_{\eta\eta}+D(\xi,\eta)u_\xi+E(\xi,\eta)u_\eta+F(\xi,\eta)u=G(\xi,\eta)
+$$
+
+% \vspace*{-1em}
+为了使得变换后的方程简化，则$\xi,\eta$应满足
+$$
+    \left\{
+    \begin{aligned}
+         & A = a\xi_x^2+b\xi_x\xi_y+c\xi_y^2=0     \\
+         & C = a\eta_x^2+b\eta_x\eta_y+c\eta_y^2=0
+    \end{aligned}
+    \right.
+$$
+
+故只需$\xi,\eta$满足方程：
+$$
+    a\varphi_x^2+b\varphi_x\varphi_y+c\varphi_y^2=0
+$$
+
+对于
+$$
+    a\left(\frac{\varphi_x}{\varphi_y}\right)^2+b\frac{\varphi_x}{\varphi_y}+c =0
+$$
+
+与之对应的为如下方程，注意b后面的符号为"-"
+% 数学粗体使用amsmath宏包支持的blodsymbol命令，boldmath和mathbf不太行
+$$
+    a\left(\frac{\d y}{\d x}\right)^2\boldsymbol{-}b\frac{\d y}{\d x}+c =0
+    % a\left(\frac{\d y}{\d x}\right)^2-b\frac{\d y}{\d x}+c =0
+$$
+解出$\xi = \varphi_1(x,y),\eta= \varphi_2(x,y)$
+最后代入下式转换后即得标准型方程
+$$
+    \left\{
+    \begin{aligned}
+         & u_x = u_{\xi}\xi_x +u_{\eta}\eta_x  \\
+         & u_y = u_{\xi}\xi_y +u_{\eta}\eta_y  \\
+         & u_{xx} = u_{\xi\xi}\xi_x^2 +2u_{\xi\eta}\xi_x\eta_x+u_{\eta\eta}\eta_x^2+u_{\xi}\xi_{xx}+u_{\eta}\eta_{xx} \\
+         & u_{xy} = u_{\xi\xi}\xi_x\xi_y+u_{\xi\eta}(\xi_x\eta_y+\xi_y\eta_x)+u_{\eta\eta}\eta_x\eta_y+u_{\xi}\xi_{xy}+u_{\eta}\eta_{xy} \\
+         & u_{yy} = u_{\xi\xi}\xi_y^2+2u_{\xi\eta}\xi_y\eta_y+u_{\eta\eta}\eta_y^2+u_{\xi}\xi_{yy}+u_{\eta}\eta_{yy}
+    \end{aligned}
+    \right.
+$$
+
+
+\subsection{习题}
+1.判断类型并化为标准型
+
+(a)$u_{xx}+2\cos xu_{xy} - \sin^2 xu_{yy} -\sin xu_y=0$
+
+解 \quad 判断类型：$\Delta = b^2-4ac=(2\cos x)^2+4\sin^2 =4>0$,为双曲型方程
+
+特征方程为
+\begin{align*}
+    \d y^2-2\cos x \d x\d y - \sin^2 x \d x^2=0 \\
+    \left(\frac{\d y}{\d x}\right)^2-2\cos \left(\frac{\d y}{\d x}\right)-\sin^2x=0
+\end{align*}
+
+可解得
+$$
+    \left(\frac{\d y}{\d x}\right)_{1,2}=\cos x \pm 1
+$$
+
+积分可得$\sin x \pm x - y=c$,并令
+$$
+    \left\{
+    \begin{aligned}
+         & \xi = \sin x +x-y  \\
+         & \eta = \sin x -x-y
+    \end{aligned}
+    \right.
+$$
+
+其中
+$\xi_x = \cos x+1,\xi_y=-1,\xi_{xx}=-\sin x,\xi_{yy}=\xi_{xy}=0,\eta_x=\cos x-1,\eta_y=-1,\eta_{xx}=-\sin x,\eta_{yy}=\eta_{xy}=0$，代入可得
+$$
+    \left\{
+    \begin{aligned}
+         & u_y = u_{\xi}\xi_y +u_{\eta}\eta_y \\
+         & u_{xx} = u_{\xi\xi}\xi_x^2 +2u_{\xi\eta}\xi_x\eta_x+u_{\eta\eta}\eta_x^2+u_{\xi}\xi_{xx}+u_{\eta}\eta_{xx} \\
+         & u_{xy} = u_{\xi\xi}\xi_x\xi_y+u_{\xi\eta}(\xi_x\eta_y+\xi_y\eta_x)+u_{\eta\eta}\eta_x\eta_y+u_{\xi}\xi_{xy}+u_{\eta}\eta_{xy} \\
+         & u_{yy} = u_{\xi\xi}\xi_y^2+2u_{\xi\eta}\xi_y\eta_y+u_{\eta\eta}\eta_y^2+u_{\xi}\xi_{yy}+u_{\eta}\eta_{yy}
+    \end{aligned}
+    \right.
+$$
+
+最后可得$u_{\xi\eta}=0$
+
+
+
+
+\section{S-L问题}
+\subsection{常见的通解形式}
+求 $u''+\lambda u=0$得通解形式
+
+(1)当 $\lambda <0$,方程通解是
+$$
+u(x)=Ae^{\sqrt{-\lambda }x}+Be^{-\sqrt{-\lambda }x}
+$$
+
+(2)当 $\lambda =0$,方程通解是
+$$
+u(x)=Ax + B
+$$
+
+(3)当 $\lambda >0$,方程通解是
+$$
+u(x)=A\cos \sqrt{\lambda }x+ B\sin \sqrt{\lambda }x
+$$
+\subsection{习题}
+3.求下列S-L问题的本征值与本征函数
+% \vspace*{-1em}
+$$
+    \left\{
+    \begin{aligned}
+         & x^2u''+3xu'+\lambda u=0,1<x<e \\
+         & u(1)=0,u(e)=0
+    \end{aligned}
+    \right.
+$$
+
+解 \quad 方程各项乘以$x$,可得$S-L$方程：
+$$
+    \frac{d}{dx}(x^3 \frac{du}{dx}) + \lambda x u = 0
+$$
+此时,$p(x)=x^3,q(x)=0,s(x)=x.$
+
+(1)当$\lambda=0$时，方程通解为
+$$
+    u(x) = \frac{C_1}{x^2} + C_2
+$$
+带入边界条件
+$$
+    \left\{
+    \begin{aligned}
+         & u(1)= C_1 + C_2 = 0           \\
+         & u(e)= \frac{C_1}{e^2} + C_2=0
+    \end{aligned}
+    \right.
+$$
+方程组只有零解，即$C_1=C_2=0$，所以$u(x) \equiv 0$
+
+(2)当$\lambda$ < 1且$\lambda \ne 0$,方程的特解形式为
+$$
+    u(x) = x^{\beta}
+$$
+带入方程中可得：
+\begin{equation}
+    \begin{aligned}
+        \beta (\beta-1)x^{\beta} + 3 \beta x^{\beta} + \lambda x^{\beta} = 0 \\
+        x^{\beta}[\beta (\beta-1) + 3 \beta + \lambda ] = 0                  \\
+        \beta^2 + 2 \beta + \lambda = 0                                      \\
+        \beta = \pm \sqrt{1-\lambda}
+        \nonumber
+    \end{aligned}
+\end{equation}
+方程通解为
+$$  u(x)=C_1x^{\sqrt{1-\lambda}} + C_2x^{-\sqrt{1-\lambda}} $$
+带入边界条件
+$$
+    \left\{
+    \begin{aligned}
+         & u(1)= C_1 + C_2 = 0                                        \\
+         & u(e)= C_1e^{\sqrt{1-\lambda}} + C_2e^{-\sqrt{1-\lambda}}=0
+    \end{aligned}
+    \right.
+$$
+方程组只有零解，即$C_1=C_2=0$，所以$u(x) \equiv 0$
+
+(3)当$\lambda$ > 1,由(2)可得，此时有
+\begin{align}
+    \beta^2 + 2 \beta + \lambda = 0 \nonumber \\
+    \beta = \pm i\sqrt{1-\lambda}
+    \nonumber
+\end{align}
+方程通解为
+$$  u(x)=C_1x^{i\sqrt{1-\lambda}} + C_2x^{-i\sqrt{1-\lambda}} $$
+注意到
+$$  x^{\pm i\sqrt{1-\lambda} } = e^{\pm i\sqrt{1-\lambda} \ln x} = \cos(\sqrt{1-\lambda} \ln x) \pm i\sin(\sqrt{1-\lambda} \ln x) $$
+方程通解为实部和虚部的线性组合
+$$  u(x)=A \cos(\sqrt{1-\lambda} \ln x)  + B \sin(\sqrt{1-\lambda} \ln x) $$
+带入边界条件，由u(1)=0可得$A=0$，由$u(e)=0$可得
+$$
+    B\sin(\sqrt{1-\lambda})  = 0
+$$
+从上式可得本征值
+$$ \lambda_n =  1+ n^2 \pi^2,n=1,2,3 \dots$$
+相应的本征函数为
+$$ u_n(x) = \frac{1}{x} \sin(n \pi \ln x), n=1,2,3 \dots$$
+
+\subsection{常数变易法}
+对于$n$阶线性微分方程在已知其齐次方程通解的基础上，利用常数变易法求解。一般是将前$n-1$阶解的导数表达式中
+所有含待定系数函数一阶导数项之和等于0。
+
+对于n阶线性微分方程：
+$$
+    y^{(n)}(x)+p_1(x)y^{(n-1)}(x)+\cdots+p_{n-1}(x)y'+p_n(x)y=f(x)
+$$
+
+对应的齐次方程通解为：$y=C_1y_1+C_2y_2+\cdots+C_ny_n$
+
+利用常数变易法设方程的解形式为：$y^{*}=C_1(x)y_1+C_2(x)y_2+\cdots+C_n(x)y_n$，其中$C_i(x)$为待定系数函数,对该解分别进行$1,2,\cdots,(n-1)$阶导，可得到$n-1$个方程。
+$$
+    \left\{
+    \begin{aligned}
+         & y=C_1y_1+C_2y_2+\cdots+C_ny_n                                        \\
+         & y'=(C_1'y_1+C_2'y_2+\cdots+C_n'y_n) + (C_1y_1'+C_2y_2'+\cdots+C_ny_n')     \\
+         & y''=(C_1''y_1+C_2''y_2+\cdots+C_n''y_n) + (C_1'y_1'+C_2'y_2'+\cdots+C_n'y_n') + (C_1y_1''+C_2y_2''+\cdots+C_ny_n'')       \\
+         & \cdots   \\
+         & y^{(n-1)}=(C_1^{(n-1)}y_1+C_2^{(n-1)}y_2+\cdots+C_n^{(n-1)}y_n) +\cdots+ (C_1y_1^{(n-1)}+C_2y_2^{(n-1)}+\cdots+C_ny_n^{(n-1)})
+    \end{aligned}
+    \right.
+$$
+
+分别令$n-1$个表达式中所有含待定函数一阶导数的项的和为0。
+$$
+    \left\{
+    \begin{aligned}
+         & C_1'(x)y_1(x)+C_2'(x)y_2(x)+\cdots+C_n'(x)y_n(x)  =0 \\
+         & C_1'(x)y_1'(x)+C_2'(x)y_2'(x)+\cdots+C_n'(x)y_n'(x)  =0   \\
+         & \cdots \\
+         & C_1'(x)y_1^{(n-2)}(x)+C_2'(x)y_2^{(n-2)}(x)+\cdots+C_n'(x)y_n^{(n-2)}(x)  =0   \\
+    \end{aligned}
+    \right.
+$$
+
+其中最后一项,$n$阶导数为：
+$$ 
+y^{(n)}(x)+p_1(x)y^{(n-1)}(x)+\cdots+p_{n-1}(x)y'+p_n(x)y=C_1'(x)y_1^{(n-1)}(x)+C_2'(x)y_2^{(n-1)}(x)+\cdots+C_n'(x)y_n^{(n-1)}(x)  =f(x)
+$$
+
+$$
+\begin{cases}
+k_{11}x_1+k_{12}x_2+\cdots+k_{1n}x_n=b_1 \\
+k_{21}x_1+k_{22}x_2+\cdots+k_{2n}x_n=b_2 \\
+\cdots \\
+k_{n1}x_1+k_{n2}x_2+\cdots+k_{nn}x_n=b_n \\
+\end{cases}
+$$
+
+\section{积分变换}
+求解无界区域或半无界区域上的问题，将$f(x)$经过某种的积分变换
+$$
+F(\lambda)=\int K(x,\lambda)f(x) \d x
+$$
+
+其中$\lambda$为参变量，$K(x,\lambda)$为积分变换核，$F(\lambda)$为$f(x)$的\textbf{像函数}，$f(x)$为$F(\lambda)$的原像函数。
+通过积分变换，将PDE转换为依赖参变量ODE的定解问题，求出ODE的解后，经过逆变换，得到PDE的解。
+
+$f(x)$在$(-\infty,\infty)$内分段光滑且绝对可积。则积分 $\displaystyle F(\lambda)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty}f(\xi)e^{i\lambda \xi } d \xi$，称为 $f(\xi)$的傅里叶积分变换，记作 $\tilde{F}[f(x)]$。积分 $\displaystyle f(x)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{+\infty}F(\lambda)e^{-i\lambda x } d \lambda$称为 $F(\lambda)$的傅里叶积分逆变换，记作 $\tilde{F}^{-1}[F(\lambda)]$。
+
+\vspace*{1em}
+原理公式：$\displaystyle f(x)=\frac{1}{\sqrt{2\pi }}\int_{-\infty}^{+\infty}\left[\frac{1}{\sqrt{2\pi }}\int_{-\infty}^{+\infty}f(\xi )e^{i\lambda \xi }\d \xi \right]e^{-i\lambda x }\d \lambda $
+\vspace*{1em}
+
+\textbf{其中内层积分呢为正变换，外层积分为逆变换，最终变回自身}
+\vspace*{0.5em}
+
+误差函数说明：$\displaystyle  erf(z)=\frac{2}{\sqrt{\pi }}\int_0^z e^{-\eta ^2} \d \eta $，积分限为 $(0,z)$
+
+余误差函数为：$\displaystyle  erfc(z)=\frac{2}{\sqrt{\pi }}\int_z^{+\infty} e^{-\eta ^2} \d \eta $，积分限为 $(z,+\infty)$
+
+\vspace*{0.5em}
+\textbf{误差函数+余误差函数=1}，即 $erf(z)+erfc(z)=1$
+
+\subsection{傅里叶变换的性质}
+\begin{enumerate}
+\item 线性变换：$\tilde{F}[\alpha f(x) + \beta g(x)]=\alpha \tilde{F}[f(x)]+\beta \tilde{F}[g(x)]$
+\item 位移性质：$\tilde{F}[f(x-c)]=e^{i\lambda c}\tilde{F}[f(x)]$
+\item 积分性质：$\displaystyle \tilde{F}[\int_{-\infty}^xf(\xi) \d \xi ]=-\frac{1}{i\lambda }\tilde{F}[f(x)]$
+\item 微分性质：$\tilde{F}[f^{(n)}(x)]=(-i\lambda )^{n}\tilde{F}[f(x)]$
+\item 卷积：$f(x),g(x)$都满足傅里叶变换条件，即 $F(\lambda)=\tilde{[f(x)]},G(\lambda )=\tilde{F}[g(x)]$，
+\item 则积分 $\displaystyle \frac{1}{\sqrt{2\pi }}\int_{-\infty}^{+\infty}f(x-\xi )g(\xi )d \xi =\displaystyle \frac{1}{\sqrt{2\pi }}\int_{-\infty}^{+\infty}g(x-\xi )f(\xi )d \xi$
+\end{enumerate}
+
+\subsection{例题}
+\subsubsection*{波动方程求解}
+用傅里叶变换求解
+$$
+\begin{cases}
+    u_{tt}=c^2u_{xx}, &-\infty <x <+\infty ,t>0\\
+    u(x,0)=\varphi(x)  &\\
+    u_t(x,0)=\psi(x) &\\
+\end{cases}
+$$
+
+解： \quad 令 $\tilde{F}[u(x,t)]=V(\lambda ,t)$，对方程做傅里叶变换转换为：
+$$
+\begin{aligned}
+    &\tilde{F}[u_{tt}] = c^2\tilde{F}[u_{xx}] \\
+    &\frac{\d^2 V}{\d t^2 }+c^2(-i\lambda )^2V=   0 \\
+    &V(\lambda ,t)=c_1(\lambda )\cos c\lambda t+c_2(\lambda )\sin c\lambda t
+\end{aligned}
+$$
+
+将已知条件带入得，
+$$
+\begin{aligned}
+    &\tilde{F}[u(x,0)]=\tilde{F}[\varphi (x)]=V(x,0)=F(\lambda ) \\
+    &\tilde{F}[u_t (x,0)]\tilde{F}[\psi (x)]=V_t(x,0)=G(\lambda ) 
+\end{aligned}
+$$
+$$
+V(\lambda ,t)=F(\lambda )\cos c\lambda t+\frac{G(\lambda )}{c\lambda } \sin c\lambda t
+$$
+
+傅里叶逆变换，
+$$
+\begin{aligned}
+    \cos c\lambda t = &\frac{e^{ic\lambda t}+e^{-ic\lambda t}}{2} \\
+    \tilde{F}^{-1}[F(\lambda )\cos c\lambda t]=&\frac{1}{\sqrt{2\pi }}\int_{-\infty}^{+\infty}F(\lambda )\cos c\lambda t e^{-i\lambda x} \d \lambda \\
+    =&\frac{1}{2\sqrt{2\pi }}\int_{-\infty}^{+\infty}F(\lambda )e^{ic\lambda t}e^{-i\lambda x} \d \lambda +\frac{1}{2\sqrt{2\pi }}\int_{-\infty}^{+\infty}F(\lambda )e^{-ic\lambda t}e^{-i\lambda x} \d \lambda \\
+    =& \frac{1}{2}\tilde{F}^{-1}[F(\lambda )] e^{i\lambda ct}+\frac{1}{2}\tilde{F}^{-1}[F(\lambda )] e^{-i\lambda ct}
+\end{aligned}
+$$
+
+根据位移公式 $\tilde{F}[f(x-c)]=e^{i\lambda ct}\tilde{F}[f(x)]$可得
+$$
+\begin{aligned}
+    f(x-c)=&\tilde{F}^{-1}[\tilde{F}(f(x))]e^{i\lambda c} \\
+    \varphi (x-ct)=&\tilde{F}^{-1}[\tilde{F}(\varphi (x))] e^{i\lambda ct}\\
+    =& \tilde{F}^{-1}[F(\lambda )] e^{i\lambda ct}\\
+\end{aligned}
+$$
+
+带入上式可得
+$$
+\begin{aligned}
+   \textrm{原式} =& \frac{1}{2}\tilde{F}^{-1}[F(\lambda )] e^{i\lambda ct}+\frac{1}{2}\tilde{F}^{-1}[F(\lambda )] e^{-i\lambda ct} \\
+    =& \frac{1}{2}\varphi (x-ct) + \frac{1}{2}\varphi (x+ct)
+\end{aligned}
+$$
+
+\subsection{拉普拉斯变换(L-T)}
+傅里叶变换得局限性：它要求被变换函数定义在$(-\infty,+\infty)$上，其次要求被变换函数在两端要趋于零，且趋向速度比较快，即满足绝对可积的条件。
+
+而一些涉及到时间的问题，只需研究$t>0$的变化，不能直接用傅里叶变换。此时若满足 $|f(t)| \le Me^{s_0t}$(具有指数阶)，且分段光滑条件不变，则可利用拉普拉斯变换。
+$$
+f_1(t)= 
+\begin{cases}
+    f(t)e^{-st},& t>0,s>s_0>0 \\
+    0,& t \le 0 \\
+\end{cases}
+$$
+
+此时作傅里叶变换，得拉普拉斯正变换:
+
+$$
+\begin{aligned}
+\tilde{F}[f(t)e^{-st}]=&\frac{1}{\sqrt{2\pi }}\int_{0}^{+\infty}f(t)e^{st}e^{i\lambda t}\d t=\frac{1}{\sqrt{2\pi }}\int_{0}^{+\infty}f(t)e^{-(s-i\lambda )t} \d t \\
+\overset{p=(s-i\lambda )}{=} & \frac{1}{\sqrt{2\pi }}\int_{0}^{+\infty}f(t)e^{-pt}\d t=F(p)
+\end{aligned}
+$$
+
+逆变换，一般不用，常借助性质求解。
+
+$$
+\begin{aligned}
+f(t)=\frac{1}{2\pi i}\int_{s-i\infty}^{s+i\infty}F(p)e^{pt}\d p \\
+\end{aligned}
+$$
+
+原理公式：
+
+$$
+\begin{aligned}
+f(t)=\frac{1}{2\pi i}\int_{s-i\infty}^{s+i\infty}\left[ \int_{0}^{+\infty}f(\eta) e^{-p\eta }\d \eta \right]e^{pt}\d p \\
+\end{aligned}
+$$
+
+\subsection{拉普拉斯变换性质}
+\begin{enumerate}
+    \item 线性变换：$\tilde{L}[\alpha f(t)+\beta g(t)]=\alpha \tilde{L}[f(t)]+\beta \tilde{L}[g(t)]$
+    \item 微分性质1：$\displaystyle \tilde{L}[f^{n}(t)]=p^n\{ \tilde{L}[f(t)]-\frac{f(0^+)}{p}-\cdots - \frac{f^{(n-1)}(0^+)}{p^n} \}$
+    \\ 微分性质2：$\displaystyle \frac{\d^n F(p)}{\d p^n}=\tilde{L}[(-t)^{n}f(t)],\tilde{L}[f(t)]=\int_{0}^{+\infty}f(\eta) e^{-p\eta }\d \eta=F(p)$
+    \item 积分性质1:$\displaystyle \varphi =\int_0^tf(\tau )\d \tau,\tilde{L}[\varphi (t)]=\frac{1}{p}\tilde{L}[f(t)]$
+    , $\tilde{L}[\varphi '(t)]=\tilde{L}[f(t)]=p\tilde{L}[\varphi (t)]$
+    \\ 积分性质2：$\displaystyle F(p)=\tilde{L}[f(t)],\int_p^{+\infty}F(s)=\tilde{L}[\frac{1}{t}f(t)]$
+    \item 位移性质：$\displaystyle F(p-p_0)=\tilde{L}[e^{p_0tf(t)}]$
+    \item 延迟性质(重点)：$\tilde{L}[f(t-c)]=e^{-pc}\tilde{L}[f(t)]=e^{-pc}F(p),c>0$
+    \item 相似性质:$\displaystyle \tilde{L}[f(at)]=\frac{1}{a}F(\frac{p}{a}),a>0$
+    \item 卷积性质：将$\displaystyle \int_0^tf(t-\xi )g(\xi ) \d \xi =\int_0^tg(t-\xi )f(\xi ) \d \xi$,记为$f*g(t)=g*f(t)$。
+\end{enumerate}
+
+\textbf{拉普拉斯变换是线性变换}，其中积分微分$1,2$性质主要在于\textbf{是先进行积分或微分操作，还是先进行拉普拉斯变换。}
+
+卷积性质说明：卷积的拉普拉斯变换等于拉普拉斯变换后的乘积；乘积的变换等于变换后的卷积。
+
+\subsection{常见的拉普拉斯变换}
+具体如下：
+\vspace*{-1em}
+%使用amsmath包
+\begin{flalign}     
+    &(1) f(t) =1 ,F(p)=\tilde{L}[1]=\frac{1}{p^2}&
+    \nonumber \\
+    &(2) f(t) = t^n, F(p) =\tilde{L}[t^n]=\frac{n!}{p^{n+1}}& 
+    \nonumber \\
+    &(3) f(t) = \cos wt,F(p)=\tilde{L}[\cos wt] = \frac{p}{p^2+w^2}& 
+    \nonumber \\
+    &(4) f(t) = \sin wt,F(p)=\tilde{L}[\sin wt] = \frac{w}{p^2+w^2}&
+    \nonumber 
+\end{flalign}
+
+\section{格林函数法}
+\subsection{格林函数法解非线性ODE边值问题}
+前面借助常数变异法解非齐次ODE初值问题
+
+
+\end{document}
+

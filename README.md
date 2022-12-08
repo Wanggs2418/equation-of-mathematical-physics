@@ -1,1 +1,4 @@
-# equation-of-mathematical-physics
+# 数学物理方程
+
+关于数学物理方程的笔记
+
