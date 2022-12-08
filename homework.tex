@@ -35,7 +35,13 @@
 \usepackage{hyperref} %超链接功能
 \usepackage{enumitem}
 \usepackage{fixdif} %2023年收录的包，重新定义数学模式下微分算符d，即\d
-\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}%使用matlab语言样式
+\usepackage{mathtools}%使用displaystyle形式的cases公式-dcases
+\usepackage{paralist}%列表环境的扩展，支持行间公式
+\usepackage{setspace}%设置间距
+
+
+
 
 % 更改有序列表样式
 \renewcommand{\labelenumi}{(\arabic{enumi})}
@@ -529,7 +535,46 @@ $$
 
 \section{格林函数法}
 \subsection{格林函数法解非线性ODE边值问题}
-前面借助常数变异法解非齐次ODE初值问题
+前面借助常数变异法解非齐次ODE初值问题。格林函数$G(x,\xi )$可看作点$\xi $在单位力的作用下，于$x$处产生的弦振动位移，同理格林函数$G(\xi ,x )$可看作点$x $在单位力的作用下，于$\xi $处产生的弦振动位移。
+
+对于区间 $[a,b]$上，如果每个小区间上都存密度为 $f(\xi )$的连续分布的外力。则在线上点 $x$处的振动位移可表示为：
+$$
+u(x)=\int_a^b G(x,\xi )f(\xi ) \d \xi 
+$$
+
+格林函数应满足的条件：
+\begin{asparaenum}
+    \item $G(x,\xi )$在区域$D$上是连续的（含区域边界），但其一阶，二阶导数是在 $D$ 中除了$x=\xi $以外的区域连续，其中$D=\{(x,\xi )|a<x<b,a<\xi <b \}$
+    % \vspace*{0.5em}
+    \item 一阶导数在区间 $(a,b)$内的跳越间断性，$\displaystyle   G_x(\xi ^+,\xi )-G_x(\xi ^-,\xi )=-\frac{1}{p(\xi )}$。（注：$\xi ^+ > \xi ,\xi ^-<\xi $）
+    \vskip 3pt
+    \item 对于固定点 $\xi $，在 $x=\xi $之外，$G(x,\xi )$关于变量 $x$满足 $LG=0$及边界条件。
+\end{asparaenum}
+
+如何构造格林函数：
+$$G(x,\xi )=
+\begin{cases}
+    G_1(x,\xi ),&a \le x<\xi \\
+    G_2(x,\xi ),&\xi <x \le b
+\end{cases}
+=
+\begin{cases}
+    u_1(x)c_1(\xi ),&a \le x<\xi \\
+    u_2(x)c_2(\xi ),&\xi <x \le b
+\end{cases}
+$$
+
+求 $Lu(x)$通解，选取分别满足边界条件的 $u_1(x),u_2(x)$，注意选取的 $u_1(x),u_2(x)$应线性无关。
+$$G(x,\xi )=
+\begin{dcases}
+     \frac{u_1(x)u_2(\xi )}{p(\xi )W(\xi ,u_1(\xi ),u_2(\xi ))},&a \le x < \xi  \\
+     \frac{u_2(x)u_1(\xi )}{p(\xi )W(\xi ,u_1(\xi ),u_2(\xi ))},&\xi <x \le b
+\end{dcases}
+$$
+
+其中 $W(\xi,u_1(\xi ),u_2(\xi s) )=u_1(\xi )u_2'(\xi )-u_2(\xi )u_1'(\xi )$为朗斯基（wronskian）行列式。最后可得 $\displaystyle u(x)=\int_a^{x^-}G_2(x,\xi )f(\xi ) \d \xi + \int_{x^+}^b G_1(x,\xi )f(\xi ) \d \xi $,此处应注意区分 $G_2,G_1$的前后位置。
+在 $a \le  \xi <x^-$区间内积分，即符合 $x>\xi $对应的 $G_2$
+
 
 
 \end{document}
